@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 图片合并工具
 
-## Getting Started
+一个基于 Next.js 14 的现代化图片合并网站，支持多种模板布局，让您轻松合并多张图片。
 
-First, run the development server:
+## 功能特点
 
+### 🎨 多种模板
+- **品字形布局**: 3张图片品字形排列
+- **四宫格布局**: 4张图片方形排列
+- **九宫格布局**: 9张图片3x3排列
+- **水平排列**: 多张图片水平排列
+- **垂直排列**: 多张图片垂直排列
+
+### ⚙️ 高级设置
+- **边框控制**: 可选择是否显示图片边框
+- **质量调节**: 支持调节输出图片质量(50%-100%)
+- **高分辨率**: 输出1200x1200高分辨率图片
+- **智能缩放**: 自动保持图片宽高比
+
+### 🚀 用户体验
+- **拖拽上传**: 支持多文件选择和上传
+- **实时预览**: 上传后立即显示图片预览
+- **响应式设计**: 完美适配桌面和移动设备
+- **暗色模式**: 支持明暗主题切换
+
+## 技术栈
+
+- **框架**: Next.js 14 (App Router)
+- **样式**: Tailwind CSS
+- **语言**: TypeScript
+- **图片处理**: HTML5 Canvas API
+- **构建工具**: npm
+
+## 快速开始
+
+### 环境要求
+- Node.js 18+
+- npm 或 yarn
+
+### 安装依赖
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 启动开发服务器
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+访问 [http://localhost:3000](http://localhost:3000) 查看应用。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 构建生产版本
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## 使用说明
 
-To learn more about Next.js, take a look at the following resources:
+1. **选择模板**: 从5种不同的布局模板中选择一种
+2. **上传图片**: 点击"选择图片"按钮上传图片文件
+3. **调整设置**: 根据需要调整边框显示和图片质量
+4. **合并图片**: 点击"合并图片"按钮生成最终图片
+5. **下载结果**: 点击"下载图片"保存合并后的图片
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 项目结构
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                 # Next.js App Router
+│   ├── globals.css     # 全局样式
+│   ├── layout.tsx      # 根布局
+│   └── page.tsx        # 主页面
+├── components/         # React 组件
+│   ├── ImageMerger.tsx # 主要功能组件
+│   └── TemplatePreview.tsx # 模板预览组件
+└── utils/              # 工具函数
+    └── imageUtils.ts   # 图片处理工具
+```
 
-## Deploy on Vercel
+## 支持的图片格式
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- JPEG (.jpg, .jpeg)
+- PNG (.png)
+- GIF (.gif)
+- WebP (.webp)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 浏览器兼容性
+
+- Chrome 88+
+- Firefox 85+
+- Safari 14+
+- Edge 88+
+# merge-image
