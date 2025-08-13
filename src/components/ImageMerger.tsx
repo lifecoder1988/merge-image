@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import TemplatePreview from './TemplatePreview';
 import { resizeImage, addImageBorder, downloadImage, compressImage } from '@/utils/imageUtils';
 
@@ -65,6 +65,53 @@ export default function ImageMerger() {
   const [imageQuality, setImageQuality] = useState(0.9);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // 处理剪切板粘贴图片
+  const handlePaste = (event: ClipboardEvent) => {
+    const items = event.clipboardData?.items;
+    if (!items) return;
+
+    const remainingSlots = selectedTemplate.maxImages - uploadedImages.length;
+    if (remainingSlots <= 0) return;
+
+    const imageFiles: File[] = [];
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.startsWith('image/')) {
+        const file = item.getAsFile();
+        if (file) {
+          imageFiles.push(file);
+        }
+      }
+    }
+
+    if (imageFiles.length > 0) {
+      const newImages: string[] = [];
+      const filesToProcess = Math.min(imageFiles.length, remainingSlots);
+
+      for (let i = 0; i < filesToProcess; i++) {
+        const file = imageFiles[i];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            newImages.push(e.target.result as string);
+            if (newImages.length === filesToProcess) {
+              setUploadedImages(prev => [...prev, ...newImages]);
+            }
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+
+  // 添加和移除paste事件监听器
+  useEffect(() => {
+    document.addEventListener('paste', handlePaste);
+    return () => {
+      document.removeEventListener('paste', handlePaste);
+    };
+  }, [uploadedImages.length, selectedTemplate.maxImages]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -286,6 +333,9 @@ export default function ImageMerger() {
           </button>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             支持 JPG、PNG、GIF 格式，最多 {selectedTemplate.maxImages} 张
+          </p>
+          <p className="mt-1 text-sm text-blue-600 dark:text-blue-400">
+            💡 提示：您也可以直接粘贴剪切板中的图片 (Ctrl+V / Cmd+V)
           </p>
         </div>
       </div>
