@@ -21,7 +21,7 @@ export const resizeImage = (
   x: number = 0,
   y: number = 0
 ) => {
-  // 计算缩放比例以保持宽高比
+  // 计算缩放比例以保持宽高比，确保图片完全显示（contain模式）
   const imgAspectRatio = img.width / img.height;
   const targetAspectRatio = targetWidth / targetHeight;
 
@@ -31,24 +31,17 @@ export const resizeImage = (
   let drawY = y;
 
   if (imgAspectRatio > targetAspectRatio) {
-    // 图片更宽，以高度为准
-    drawWidth = targetHeight * imgAspectRatio;
-    drawX = x - (drawWidth - targetWidth) / 2;
-  } else {
-    // 图片更高，以宽度为准
+    // 图片更宽，以宽度为准，高度按比例缩小
     drawHeight = targetWidth / imgAspectRatio;
-    drawY = y - (drawHeight - targetHeight) / 2;
+    drawY = y + (targetHeight - drawHeight) / 2; // 垂直居中
+  } else {
+    // 图片更高，以高度为准，宽度按比例缩小
+    drawWidth = targetHeight * imgAspectRatio;
+    drawX = x + (targetWidth - drawWidth) / 2; // 水平居中
   }
 
-  // 裁剪区域
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(x, y, targetWidth, targetHeight);
-  ctx.clip();
-  
-  // 绘制图片
+  // 绘制图片（不使用裁剪，确保图片内容完全可见）
   ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-  ctx.restore();
 };
 
 export const addImageBorder = (
